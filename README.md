@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://repository-images.githubusercontent.com/55325103/2bed6800-bfef-11eb-835b-99b981918623?width=300&height=260" alt="Adonis Logo" width="300" />
+  <img src="https://ibb.co/9kVKjNcY" alt="Adonis Logo" width="300" />
 
   # Anti-Kick & Adonis Bypass
 
