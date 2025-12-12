@@ -26,7 +26,7 @@ Adonis also kicks the player locally.
 * **Direct Function Hook:** Directly swaps the `LocalPlayer.Kick` function, making it non-functional for game scripts.
 
 ### 3. Cleaning detectors via getgc
-This is the most advanced part of the bypass. The script scans the Lua environment (**Garbage Collector**) in search of internal Adonis tables:
+The script scans the Lua environment (**Garbage Collector**) in search of internal Adonis tables:
 * It looks for functions and tables containing keys `namecallInstance` or `indexInstance` (used in Adonis anti-cheat metatables).
 * Upon detection, these values are replaced with empty tables.
 
