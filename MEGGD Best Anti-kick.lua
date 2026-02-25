@@ -41,27 +41,48 @@ n = hookmetamethod(game, "__namecall", function(s, ...)
     return n(s, ...)
 end)
 
+local hookfunction = hookfunction or replaceclosure
+local newcclosure = newcclosure or function(f) return f end
+local getgc = getgc or function() return {} end
+
 local k
-k = hookfunction(p.Kick, function(s, ...)
-    if s == p then
-        return
+k = hookfunction(p.Kick, newcclosure(function(self, ...)
+    if not checkcaller() then
+        if typeof(self) ~= "Instance" or self.ClassName ~= "Player" then
+            return k(self, ...)
+        end
+        if self == p then
+            return
+        end
     end
-    return k(s, ...)
-end)
+    return k(self, ...)
+end))
 
-local g = getgc or function() return {} end
-local u = debug.getupvalues or getupvalues
-local s = debug.setupvalue or setupvalue
-local h = hookfunction or replaceclosure
-local n = newcclosure or function(f) return f end
-
-local found = false
-
-for _, func in pairs(g()) do
-    if type(func) == "function" then
-        local upvalues = u(func)
-        for i, val in pairs(upvalues) do
-            if type(val) == "table" then
+pcall(function()
+    for _, v in pairs(getgc(true)) do
+        if type(v) == "table" then
+            pcall(function()
+                if rawget(v, "Send") and type(rawget(v, "Send")) == "function" and rawget(v, "Get") and rawget(v, "Encrypt") then
+                    local s_send
+                    s_send = hookfunction(v.Send, newcclosure(function(cmd, ...)
+                        if type(cmd) == "string" then
+                            local c = string.lower(cmd)
+                            if c == "detected" or c == "logerror" then
+                                return
+                            end
+                        end
+                        return s_send(cmd, ...)
+                    end))
+                end
+                
+                if rawget(v, "Kill") and type(rawget(v, "Kill")) == "function" and rawget(v, "Disconnect") then
+                    hookfunction(v.Kill, newcclosure(function(...) return end))
+                    hookfunction(v.Disconnect, newcclosure(function(...) return end))
+                end
+            end)
+        end
+    end
+end)            if type(val) == "table" then
                 if rawget(val, "namecallInstance") or rawget(val, "indexInstance") then
                     s(func, i, {})
                     found = true
