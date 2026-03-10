@@ -173,27 +173,31 @@ o = hookfunction(Instance.new("RemoteEvent").FireServer, function(s, ...)
 end)
 
 local n
-n = hookmetamethod(game, "__namecall", function(s, ...)
-    if s == p and getnamecallmethod():lower() == "kick" then return end
+n = d1(game, "__namecall", c1(function(s, ...)
+    local m = h1()
+    if s == p and (m == "Kick" or m == "kick" or m == "Destroy" or m == "destroy") then return end
     return n(s, ...)
-end)
+end))
 
 local k
-k = hookfunction(p.Kick, newcclosure(function(self, ...)
-    if not checkcaller() then
-        if typeof(self) ~= "Instance" or self.ClassName ~= "Player" then return k(self, ...) end
-        if self == p then return end
-    end
+k = b1(p.Kick, c1(function(self, ...)
+    if not checkcaller() and self == p then return end
     return k(self, ...)
 end))
 
+local D
+D = b1(p.Destroy, c1(function(self, ...)
+    if not checkcaller() and self == p then return end
+    return D(self, ...)
+end))
+
 pcall(function()
-    for _, v in pairs(getgc(true)) do
+    for _, v in pairs(a1(true)) do
         if type(v) == "table" then
             pcall(function()
                 if rawget(v, "Send") and type(rawget(v, "Send")) == "function" and rawget(v, "Get") and rawget(v, "Encrypt") then
                     local s_send
-                    s_send = hookfunction(v.Send, newcclosure(function(cmd, ...)
+                    s_send = b1(v.Send, c1(function(cmd, ...)
                         if type(cmd) == "string" then
                             local c = string.lower(cmd)
                             if c == "detected" or c == "logerror" then return end
@@ -202,8 +206,8 @@ pcall(function()
                     end))
                 end
                 if rawget(v, "Kill") and type(rawget(v, "Kill")) == "function" and rawget(v, "Disconnect") then
-                    hookfunction(v.Kill, newcclosure(function(...) return end))
-                    hookfunction(v.Disconnect, newcclosure(function(...) return end))
+                    b1(v.Kill, c1(function(...) return end))
+                    b1(v.Disconnect, c1(function(...) return end))
                 end
             end)
         end
