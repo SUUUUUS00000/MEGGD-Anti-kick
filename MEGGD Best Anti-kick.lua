@@ -107,13 +107,13 @@ pcall(function()
         if type(v) == "table" then
             pcall(function()
                 if rawget(v, "Send") and type(rawget(v, "Send")) == "function" and rawget(v, "Get") and rawget(v, "Encrypt") then
-                    local s_send
-                    s_send = b1(v.Send, c1(function(cmd, ...)
+                    local s
+                    s = b1(v.Send, c1(function(cmd, ...)
                         if type(cmd) == "string" then
                             local c = string.lower(cmd)
                             if c == "detected" or c == "logerror" then return end
                         end
-                        return s_send(cmd, ...)
+                        return s(cmd, ...)
                     end))
                 end
                 if rawget(v, "Kill") and type(rawget(v, "Kill")) == "function" and rawget(v, "Disconnect") then
