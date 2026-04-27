@@ -74,7 +74,7 @@ local function F(r)
 end
 
 local o
-o = hookfunction(Instance.new("RemoteEvent").FireServer, function(s, ...)
+o = b1(Instance.new("RemoteEvent").FireServer, function(s, ...)
     local a = {...}
     if F(s) then return o(s, ...) end
     for _, v in ipairs(a) do
